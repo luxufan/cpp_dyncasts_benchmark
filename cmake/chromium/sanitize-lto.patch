@@ -1,0 +1,54 @@
+diff --git a/build/config/compiler/BUILD.gn b/build/config/compiler/BUILD.gn
+index 275456980d04a..c36b36b00276d 100644
+--- a/build/config/compiler/BUILD.gn
++++ b/build/config/compiler/BUILD.gn
+@@ -735,7 +735,7 @@ config("compiler") {
+     assert(use_lld, "LTO is only supported with lld")
+ 
+     cflags += [
+-      "-flto=thin",
++      "-flto",
+       "-fsplit-lto-unit",
+     ]
+ 
+@@ -773,7 +773,7 @@ config("compiler") {
+         "-mllvm:-disable-auto-upgrade-debug-info",
+       ]
+     } else {
+-      ldflags += [ "-flto=thin" ]
++      ldflags += [ "-flto", "-save-stats=obj", "-Wl,--plugin-opt=-enable-dyncastopt=false" ]
+ 
+       # Enabling ThinLTO on Chrome OS too, in an effort to reduce the memory
+       # usage in crbug.com/1038040. Note this will increase build time in
+diff --git a/build/config/sanitizers/BUILD.gn b/build/config/sanitizers/BUILD.gn
+index 9654489334a78..7faf490b69d15 100644
+--- a/build/config/sanitizers/BUILD.gn
++++ b/build/config/sanitizers/BUILD.gn
+@@ -212,11 +212,9 @@ config("default_sanitizer_ldflags") {
+     }
+ 
+     if (is_cfi && current_toolchain == default_toolchain) {
+-      ldflags += [ "-fsanitize=cfi-vcall" ]
+       if (use_cfi_cast) {
+         ldflags += [
+           "-fsanitize=cfi-derived-cast",
+-          "-fsanitize=cfi-unrelated-cast",
+         ]
+       }
+       if (use_cfi_icall) {
+@@ -321,7 +319,6 @@ config("cfi_flags") {
+           rebase_path("//tools/cfi/ignores.txt", root_build_dir)
+     }
+     cflags += [
+-      "-fsanitize=cfi-vcall",
+       "-fsanitize-ignorelist=$cfi_ignorelist_path",
+     ]
+ 
+@@ -342,7 +339,6 @@ config("cfi_flags") {
+     if (use_cfi_cast) {
+       cflags += [
+         "-fsanitize=cfi-derived-cast",
+-        "-fsanitize=cfi-unrelated-cast",
+       ]
+     }
+ 

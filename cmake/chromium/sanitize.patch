@@ -1,0 +1,32 @@
+diff --git a/build/config/sanitizers/BUILD.gn b/build/config/sanitizers/BUILD.gn
+index 837bfbc6f2574..538b4018528d6 100644
+--- a/build/config/sanitizers/BUILD.gn
++++ b/build/config/sanitizers/BUILD.gn
+@@ -245,11 +245,9 @@ config("default_sanitizer_ldflags") {
+     }
+ 
+     if (is_cfi && current_toolchain == default_toolchain) {
+-      ldflags += [ "-fsanitize=cfi-vcall" ]
+       if (use_cfi_cast) {
+         ldflags += [
+           "-fsanitize=cfi-derived-cast",
+-          "-fsanitize=cfi-unrelated-cast",
+         ]
+       }
+       if (use_cfi_icall) {
+@@ -357,7 +355,6 @@ config("cfi_flags") {
+           rebase_path("//tools/cfi/ignores.txt", root_build_dir)
+     }
+     cflags += [
+-      "-fsanitize=cfi-vcall",
+       "-fsanitize-ignorelist=$cfi_ignorelist_path",
+     ]
+ 
+@@ -378,7 +375,6 @@ config("cfi_flags") {
+     if (use_cfi_cast) {
+       cflags += [
+         "-fsanitize=cfi-derived-cast",
+-        "-fsanitize=cfi-unrelated-cast",
+       ]
+     }
+ 

@@ -1,0 +1,40 @@
+diff --git a/config/compiler/BUILD.gn b/config/compiler/BUILD.gn
+index d94d465b4..6bafac244 100644
+--- a/config/compiler/BUILD.gn
++++ b/config/compiler/BUILD.gn
+@@ -698,7 +698,7 @@ config("compiler") {
+     assert(use_lld, "LTO is only supported with lld")
+ 
+     cflags += [
+-      "-flto=thin",
++      "-flto",
+       "-fsplit-lto-unit",
+     ]
+ 
+@@ -746,7 +746,7 @@ config("compiler") {
+         "-mllvm:-disable-auto-upgrade-debug-info",
+       ]
+     } else {
+-      ldflags += [ "-flto=thin" ]
++      ldflags += [ "-flto", "-save-stats=obj", "-Wl,--plugin-opt=-enable-dyncastopt=true" ]
+ 
+       # Enabling ThinLTO on Chrome OS too, in an effort to reduce the memory
+       # usage in crbug.com/1038040. Note this will increase build time in
+@@ -800,7 +800,7 @@ config("compiler") {
+     # TODO(crbug.com/40182783): investigate why this isn't effective on
+     # arm32.
+     if (!is_android || current_cpu == "arm64") {
+-      cflags += [ "-fwhole-program-vtables" ]
++      cflags += [ "-fwhole-program-vtables", "-fsafe-static-cast" ]
+ 
+       if (toolchain_supports_rust_thin_lto) {
+         # whole-program-vtables implies -fsplit-lto-unit, and Rust needs to match
+@@ -816,7 +816,7 @@ config("compiler") {
+       }
+ 
+       if (!is_win) {
+-        ldflags += [ "-fwhole-program-vtables" ]
++        ldflags += [ "-fwhole-program-vtables", "-fsafe-static-cast" ]
+       }
+     }
+ 

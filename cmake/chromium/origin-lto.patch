@@ -1,0 +1,22 @@
+diff --git a/build/config/compiler/BUILD.gn b/build/config/compiler/BUILD.gn
+index 275456980d04a..c36b36b00276d 100644
+--- a/build/config/compiler/BUILD.gn
++++ b/build/config/compiler/BUILD.gn
+@@ -735,7 +735,7 @@ config("compiler") {
+     assert(use_lld, "LTO is only supported with lld")
+ 
+     cflags += [
+-      "-flto=thin",
++      "-flto",
+       "-fsplit-lto-unit",
+     ]
+ 
+@@ -773,7 +773,7 @@ config("compiler") {
+         "-mllvm:-disable-auto-upgrade-debug-info",
+       ]
+     } else {
+-      ldflags += [ "-flto=thin" ]
++      ldflags += [ "-flto", "-save-stats=obj", "-Wl,--plugin-opt=-enable-dyncastopt=false" ]
+ 
+       # Enabling ThinLTO on Chrome OS too, in an effort to reduce the memory
+       # usage in crbug.com/1038040. Note this will increase build time in

@@ -1,0 +1,9 @@
+# Set build arguments here. See `gn help buildargs`.
+is_debug = false
+use_thin_lto = true
+use_rtti = true
+thin_lto_enable_cache = false
+clang_use_chrome_plugins = false
+clang_base_path = getenv("HOME") + "/benchmark/toolchain/llvm-project/build-release"
+symbol_level = 1
+thin_lto_enable_optimizations = true
